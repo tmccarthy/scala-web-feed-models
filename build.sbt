@@ -15,6 +15,7 @@ lazy val atom = project
   .in(file("atom"))
   .settings(settingsForSubprojectCalled("atom"))
   .settings(
+    libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.0.1",
   )
 
 //lazy val rss = project

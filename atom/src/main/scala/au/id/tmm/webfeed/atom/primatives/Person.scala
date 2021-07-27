@@ -4,6 +4,6 @@ import java.net.URI
 
 final case class Person(
   name: Text,
-  uri: URI,
-  email: Email,
+  uri: Option[URI],
+  email: Option[Email],
 )

@@ -4,7 +4,7 @@ import java.net.URI
 
 final case class Link(
   href: URI,
-  rel: Link.Rel,
+  rel: Option[Link.Rel],
   `type`: Option[MediaType],
   hreflang: Option[LanguageTag],
   title: Option[String],

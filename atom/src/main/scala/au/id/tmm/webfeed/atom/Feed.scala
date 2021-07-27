@@ -6,15 +6,15 @@ import au.id.tmm.webfeed.atom.common._
 import au.id.tmm.webfeed.atom.primatives._
 
 final case class Feed(
-  language: LanguageTag,
+  language: Option[LanguageTag],
   authors: NonEmptyList[Person],
-  categories: List[Person],
+  categories: List[Category],
   content: Option[Content],
   generator: Option[Feed.Generator],
   icon: Option[URI],
   logo: Option[URI],
   id: Id,
-  links: Links,
+  links: List[Link],
   rights: Option[Text],
   subtitle: Option[Text],
   title: Text,
