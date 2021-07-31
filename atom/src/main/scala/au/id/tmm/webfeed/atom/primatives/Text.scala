@@ -6,8 +6,8 @@ sealed trait Text
 
 object Text {
 
-  final case class Raw(asString: String)   extends Text
-  final case class Html(asString: String)  extends Text
-  final case class XHtml(asXml: Node) extends Text
+  final case class Raw(asString: String)  extends Text
+  final case class Html(asString: String) extends Text
+  final case class XHtml(asXml: Node)     extends Text
 
 }

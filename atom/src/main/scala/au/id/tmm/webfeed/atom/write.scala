@@ -10,7 +10,7 @@ import scala.xml.Node
 
 object write {
 
-  def apply(feed: Feed): Node = {
+  def apply(feed: Feed): Node =
     <feed xmlns="http://www.w3.org/2005/Atom">
       {toNode(feed.title)("title")}
       {maybeNode(feed.subtitle)(toNode(_)("subtitle"))}
@@ -26,26 +26,24 @@ object write {
       {nodes(feed.authors)(toNode(_)("author"))}
       {nodes(feed.entries)(toNode)}
     </feed>
-  }
 
-  private def toNode(person: Person)(label: String): Node = {
+  private def toNode(person: Person)(label: String): Node =
     <person>
       {toNode(person.name)("name")}
       {maybeNode(person.uri)(u => <uri>{u.toString}</uri>)}
       {maybeNode(person.email)(e => <email>{e.asString}</email>)}
     </person>.copy(label = label)
-  }
 
   private def toNode(text: Text)(label: String): Node = {
     val nodeChild: Node = text match {
-      case Text.Raw(asString) => scala.xml.Text(asString)
+      case Text.Raw(asString)  => scala.xml.Text(asString)
       case Text.Html(asString) => scala.xml.Text(asString)
-      case Text.XHtml(asXml) => asXml
+      case Text.XHtml(asXml)   => asXml
     }
 
     val typeAttributeValue = text match {
-      case Text.Raw(_) => "text"
-      case Text.Html(_) => "html"
+      case Text.Raw(_)   => "text"
+      case Text.Html(_)  => "html"
       case Text.XHtml(_) => "xhtml"
     }
 

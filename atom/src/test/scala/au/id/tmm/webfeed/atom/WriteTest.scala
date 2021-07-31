@@ -28,7 +28,7 @@ class WriteTest extends FunSuite {
           term = "Test post",
           scheme = Some(URI.create("http://example.org/categories")),
           label = Some("Some label"),
-        )
+        ),
       ),
       content = None,
       generator = Some(
@@ -36,7 +36,7 @@ class WriteTest extends FunSuite {
           description = "generator description",
           uri = Some(URI.create("http://example.org/generator")),
           version = Some("1.0"),
-        )
+        ),
       ),
       icon = Some(URI.create("http://example.org/icon.png")),
       logo = Some(URI.create("http://example.org/logo.png")),
@@ -121,8 +121,7 @@ object WriteTest {
 
   private val prettyPrinter: PrettyPrinter = new PrettyPrinter(width = Int.MaxValue, step = 2)
 
-  private def assertXmlEquals(obtained: Node, expected: Node): Unit = {
+  private def assertXmlEquals(obtained: Node, expected: Node): Unit =
     Assertions.assertEquals(prettyPrinter.format(obtained), prettyPrinter.format(expected))
-  }
 
 }
