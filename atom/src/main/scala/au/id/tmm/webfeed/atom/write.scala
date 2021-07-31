@@ -20,8 +20,8 @@ object write {
       {nodes(feed.categories)(toNode)}
       {maybeNode(feed.content)(toNode)}
       {maybeNode(feed.generator)(toNode)}
-      {maybeNode(feed.icon)(toNode)}
-      {maybeNode(feed.logo)(toNode)}
+      {maybeNode(feed.icon)(toNode(_)("icon"))}
+      {maybeNode(feed.logo)(toNode(_)("logo"))}
       {maybeNode(feed.rights)(toNode(_)("rights"))}
       {nodes(feed.authors)(toNode(_)("author"))}
       {nodes(feed.entries)(toNode)}
@@ -75,9 +75,12 @@ object write {
 
   private def toNode(content: Content): Node = ???
 
-  private def toNode(generator: Generator): Node = ???
+  private def toNode(generator: Generator): Node =
+    <generator uri={maybeAttribute(generator.uri.map(_.toString))} version={maybeAttribute(generator.version)}>
+      {generator.description}
+    </generator>
 
-  private def toNode(uri: URI): Node = ???
+  private def toNode(uri: URI)(label: String): Node = <uri>{uri.toString}</uri>.copy(label = label)
 
   private def toNode(entry: Entry): Node =
     <entry>

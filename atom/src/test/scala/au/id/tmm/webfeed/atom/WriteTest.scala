@@ -3,6 +3,7 @@ package au.id.tmm.webfeed.atom
 import java.net.URI
 import java.time.Instant
 
+import au.id.tmm.webfeed.atom.Feed.Generator
 import au.id.tmm.webfeed.atom.WriteTest.assertXmlEquals
 import au.id.tmm.webfeed.atom.common._
 import au.id.tmm.webfeed.atom.primatives._
@@ -25,14 +26,20 @@ class WriteTest extends FunSuite {
       categories = List(
         Category(
           term = "Test post",
-          scheme = Some(URI.create("http://example.org/")),
+          scheme = Some(URI.create("http://example.org/categories")),
           label = Some("Some label"),
         )
       ),
       content = None,
-      generator = None,
-      icon = None,
-      logo = None,
+      generator = Some(
+        Generator(
+          description = "generator description",
+          uri = Some(URI.create("http://example.org/generator")),
+          version = Some("1.0"),
+        )
+      ),
+      icon = Some(URI.create("http://example.org/icon.png")),
+      logo = Some(URI.create("http://example.org/logo.png")),
       id = Id("urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6"),
       links = List(
         Link(
@@ -83,9 +90,14 @@ class WriteTest extends FunSuite {
         <link href="http://example.org/"/>
         <category
           term="Test post"
-          scheme="http://example.org/"
+          scheme="http://example.org/categories"
           label="Some label"
         />
+        <generator uri="http://example.org/generator" version="1.0">
+          generator description
+        </generator>
+        <icon>http://example.org/icon.png</icon>
+        <logo>http://example.org/logo.png</logo>
         <author>
           <name type="text">John Doe</name>
         </author>

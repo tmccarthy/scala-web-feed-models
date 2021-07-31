@@ -24,7 +24,8 @@ final case class Feed(
 
 object Feed {
   final case class Generator(
-    uri: URI,
-    version: String,
+    description: String,
+    uri: Option[URI],
+    version: Option[String],
   )
 }
