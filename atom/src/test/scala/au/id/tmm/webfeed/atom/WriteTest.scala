@@ -3,9 +3,12 @@ package au.id.tmm.webfeed.atom
 import java.net.URI
 import java.time.Instant
 
+import au.id.tmm.webfeed.atom.WriteTest.assertXmlEquals
 import au.id.tmm.webfeed.atom.common._
 import au.id.tmm.webfeed.atom.primatives._
-import munit.FunSuite
+import munit.{Assertions, FunSuite}
+
+import scala.xml.{Node, PrettyPrinter}
 
 class WriteTest extends FunSuite {
 
@@ -69,22 +72,34 @@ class WriteTest extends FunSuite {
     val expectedXml =
       <feed xmlns="http://www.w3.org/2005/Atom">
         <title type="text">Example Feed</title>
-        <link href="http://example.org/"/>
-        <updated>2003-12-13T18:30:02Z</updated>
-        <author>
-          <name>John Doe</name>
-        </author>
         <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+        <updated>2003-12-13T18:30:02Z</updated>
+        <link href="http://example.org/"/>
+        <author>
+          <name type="text">John Doe</name>
+        </author>
         <entry>
           <title type="text">Atom-Powered Robots Run Amok</title>
-          <link href="http://example.org/2003/12/13/atom03"/>
           <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+          <link href="http://example.org/2003/12/13/atom03"/>
           <updated>2003-12-13T18:30:02Z</updated>
           <summary type="text">Some text.</summary>
         </entry>
       </feed>
 
-    assertEquals(write(feed), expectedXml)
+    val obtainedXml = write(feed)
+
+    assertXmlEquals(obtainedXml, expectedXml)
+  }
+
+}
+
+object WriteTest {
+
+  private val prettyPrinter: PrettyPrinter = new PrettyPrinter(width = Int.MaxValue, step = 2)
+
+  private def assertXmlEquals(obtained: Node, expected: Node): Unit = {
+    Assertions.assertEquals(prettyPrinter.format(obtained), prettyPrinter.format(expected))
   }
 
 }

@@ -1,6 +1,10 @@
 package au.id.tmm.webfeed.atom
 
-import au.id.tmm.webfeed.atom.primatives.{Person, Text}
+import java.net.URI
+
+import au.id.tmm.webfeed.atom.Feed.Generator
+import au.id.tmm.webfeed.atom.common.{Category, Content, Id}
+import au.id.tmm.webfeed.atom.primatives.{Date, Link, NonEmptyList, Person, Text}
 
 import scala.xml.Node
 
@@ -9,7 +13,18 @@ object write {
   def apply(feed: Feed): Node = {
     <feed xmlns="http://www.w3.org/2005/Atom">
       {toNode(feed.title)("title")}
-      {feed.authors.toList.map(toNode(_)("author"))}
+      {maybeNode(feed.subtitle)(toNode(_)("subtitle"))}
+      {toNode(feed.id)}
+      {toNode(feed.updated)("updated")}
+      {nodes(feed.links)(toNode)}
+      {nodes(feed.categories)(toNode)}
+      {maybeNode(feed.content)(toNode)}
+      {maybeNode(feed.generator)(toNode)}
+      {maybeNode(feed.icon)(toNode)}
+      {maybeNode(feed.logo)(toNode)}
+      {maybeNode(feed.rights)(toNode(_)("rights"))}
+      {nodes(feed.authors)(toNode(_)("author"))}
+      {nodes(feed.entries)(toNode)}
     </feed>
   }
 
@@ -18,7 +33,7 @@ object write {
       {toNode(person.name)("name")}
       {maybeNode(person.uri)(u => <uri>{u.toString}</uri>)}
       {maybeNode(person.email)(e => <email>{e.asString}</email>)}
-    </person>
+    </person>.copy(label = label)
   }
 
   private def toNode(text: Text)(label: String): Node = {
@@ -37,6 +52,47 @@ object write {
     <text type={typeAttributeValue}>{nodeChild}</text>.copy(label = label)
   }
 
+  private def toNode(id: Id): Node = <id>{id.asString}</id>
+
+  private def toNode(date: Date)(label: String): Node = <date>{date.asInstant.toString}</date>.copy(label = label)
+
+  private def toNode(link: Link): Node =
+    <link
+      href={link.href.toString}
+      rel={link.rel.map(_.asString).orNull}
+      type={link.`type`.map(_.asString).orNull}
+      hreflang={link.hreflang.map(_.asString).orNull}
+      title={link.title.orNull}
+      length={link.length.orNull}
+    />
+
+  private def toNode(category: Category): Node = ???
+
+  private def toNode(content: Content): Node = ???
+
+  private def toNode(generator: Generator): Node = ???
+
+  private def toNode(uri: URI): Node = ???
+
+  private def toNode(entry: Entry): Node =
+    <entry>
+      {toNode(entry.title)("title")}
+      {toNode(entry.id)}
+      {nodes(entry.links)(toNode)}
+      {maybeNode(entry.published)(toNode(_)("published"))}
+      {toNode(entry.updated)("updated")}
+      {nodes(entry.authors)(toNode(_)("author"))}
+      {nodes(entry.contributors)(toNode(_)("contributor"))}
+      {nodes(entry.categories)(toNode)}
+      {maybeNode(entry.rights)(toNode(_)("rights"))}
+      {maybeNode(entry.summary)(toNode(_)("summary"))}
+      {maybeNode(entry.content)(toNode)}
+    </entry>
+
   private def maybeNode[A](option: Option[A])(f: A => Node): Seq[Node] = option.map(f).toList
+
+  private def nodes[A](list: NonEmptyList[A])(f: A => Node): Seq[Node] = nodes(list.toList)(f)
+
+  private def nodes[A](list: List[A])(f: A => Node): Seq[Node] = list.map(f)
 
 }
