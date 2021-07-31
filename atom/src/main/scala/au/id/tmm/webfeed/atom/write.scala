@@ -59,14 +59,19 @@ object write {
   private def toNode(link: Link): Node =
     <link
       href={link.href.toString}
-      rel={link.rel.map(_.asString).orNull}
-      type={link.`type`.map(_.asString).orNull}
-      hreflang={link.hreflang.map(_.asString).orNull}
-      title={link.title.orNull}
-      length={link.length.orNull}
+      rel={maybeAttribute(link.rel.map(_.asString))}
+      type={maybeAttribute(link.`type`.map(_.asString))}
+      hreflang={maybeAttribute(link.hreflang.map(_.asString))}
+      title={maybeAttribute(link.title)}
+      length={maybeAttribute(link.length)}
     />
 
-  private def toNode(category: Category): Node = ???
+  private def toNode(category: Category): Node =
+    <category
+      term={category.term}
+      scheme={maybeAttribute(category.scheme.map(_.toString))}
+      label={maybeAttribute(category.label)}
+    />
 
   private def toNode(content: Content): Node = ???
 
@@ -94,5 +99,7 @@ object write {
   private def nodes[A](list: NonEmptyList[A])(f: A => Node): Seq[Node] = nodes(list.toList)(f)
 
   private def nodes[A](list: List[A])(f: A => Node): Seq[Node] = list.map(f)
+
+  private def maybeAttribute(option: Option[String]): String = option.orNull
 
 }

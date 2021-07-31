@@ -22,7 +22,13 @@ class WriteTest extends FunSuite {
           email = None,
         ),
       ),
-      categories = List.empty,
+      categories = List(
+        Category(
+          term = "Test post",
+          scheme = Some(URI.create("http://example.org/")),
+          label = Some("Some label"),
+        )
+      ),
       content = None,
       generator = None,
       icon = None,
@@ -75,6 +81,11 @@ class WriteTest extends FunSuite {
         <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
         <updated>2003-12-13T18:30:02Z</updated>
         <link href="http://example.org/"/>
+        <category
+          term="Test post"
+          scheme="http://example.org/"
+          label="Some label"
+        />
         <author>
           <name type="text">John Doe</name>
         </author>
