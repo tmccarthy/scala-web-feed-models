@@ -71,7 +71,11 @@ object write {
       label={maybeAttribute(category.label)}
     />
 
-  private def toNode(content: Content): Node = ???
+  private def toNode(content: Content): Node = content match {
+    case Content.InlineText(text)                 => toNode(text)("content")
+    case Content.InlineOther(mediaType, asString) => <content type={mediaType.asString}>{asString}</content>
+    case Content.OutOfLine(mediaType, uri)        => <content type={mediaType.asString} src={uri.toString} />
+  }
 
   private def toNode(generator: Generator): Node =
     <generator uri={maybeAttribute(generator.uri.map(_.toString))} version={maybeAttribute(generator.version)}>

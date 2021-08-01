@@ -60,7 +60,11 @@ class WriteTest extends FunSuite {
           language = None,
           authors = List.empty,
           categories = List.empty,
-          content = None,
+          content = Some(
+            Content.InlineText(
+              Text.Raw("Entry content"),
+            ),
+          ),
           contributors = List.empty,
           id = Id("urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a"),
           links = List(
@@ -107,6 +111,7 @@ class WriteTest extends FunSuite {
           <link href="http://example.org/2003/12/13/atom03"/>
           <updated>2003-12-13T18:30:02Z</updated>
           <summary type="text">Some text.</summary>
+          <content type="text">Entry content</content>
         </entry>
       </feed>
 
