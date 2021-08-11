@@ -1,3 +1,5 @@
 package au.id.tmm.webfeed.atom.common
 
-final case class Id(asString: String) extends AnyVal
+import java.net.URI
+
+final case class Id(asUri: URI) extends AnyVal

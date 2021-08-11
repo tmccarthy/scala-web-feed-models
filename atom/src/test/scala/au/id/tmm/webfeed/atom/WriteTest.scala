@@ -40,7 +40,7 @@ class WriteTest extends FunSuite {
       ),
       icon = Some(URI.create("http://example.org/icon.png")),
       logo = Some(URI.create("http://example.org/logo.png")),
-      id = Id("urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6"),
+      id = Id(URI.create("urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6")),
       links = List(
         Link(
           href = URI.create("http://example.org/"),
@@ -66,7 +66,7 @@ class WriteTest extends FunSuite {
             ),
           ),
           contributors = List.empty,
-          id = Id("urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a"),
+          id = Id(URI.create("urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a")),
           links = List(
             Link(
               href = URI.create("http://example.org/2003/12/13/atom03"),

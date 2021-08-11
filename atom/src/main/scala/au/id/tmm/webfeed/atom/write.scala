@@ -8,6 +8,7 @@ import au.id.tmm.webfeed.atom.primatives.{Date, Link, NonEmptyList, Person, Text
 
 import scala.xml.Node
 
+// TODO need to write documents and nodes
 object write {
 
   def apply(feed: Feed): Node =
@@ -50,7 +51,7 @@ object write {
     <text type={typeAttributeValue}>{nodeChild}</text>.copy(label = label)
   }
 
-  private def toNode(id: Id): Node = <id>{id.asString}</id>
+  private def toNode(id: Id): Node = <id>{id.asUri.toString}</id>
 
   private def toNode(date: Date)(label: String): Node = <date>{date.asInstant.toString}</date>.copy(label = label)
 
